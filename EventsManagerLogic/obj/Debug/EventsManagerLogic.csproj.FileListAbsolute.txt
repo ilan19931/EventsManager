@@ -1,0 +1,7 @@
+C:\Users\kinsh\source\repos\EventsManager\EventsManagerLogic\bin\Debug\EventsManagerLogic.dll
+C:\Users\kinsh\source\repos\EventsManager\EventsManagerLogic\bin\Debug\EventsManagerLogic.pdb
+C:\Users\kinsh\source\repos\EventsManager\EventsManagerLogic\obj\Debug\EventsManagerLogic.csproj.CoreCompileInputs.cache
+C:\Users\kinsh\source\repos\EventsManager\EventsManagerLogic\obj\Debug\EventsManagerLogic.dll
+C:\Users\kinsh\source\repos\EventsManager\EventsManagerLogic\obj\Debug\EventsManagerLogic.pdb
+C:\Users\kinsh\source\repos\EventsManager\EventsManagerLogic\bin\Debug\EventsManagerLogic.dll.config
+C:\Users\kinsh\source\repos\EventsManager\EventsManagerLogic\obj\Debug\EventsManagerLogic.csproj.AssemblyReference.cache
