@@ -1,0 +1,12 @@
+[Known Issues]
+*
+
+
+[need to do]
+* closed events, should show "open event" button.
+
+
+~~~~~ Securiry Issues ~~~~~~
+	need to insert safe values new account
+	need to insert safe values new event
+	need to insert safe values new comment

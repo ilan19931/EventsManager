@@ -19,11 +19,13 @@ C:\Users\kinsh\source\repos\EventsManager\EventsManager\obj\Debug\EventsManager.
 C:\Users\kinsh\source\repos\EventsManager\EventsManager\bin\Debug\EventsManagerLogic.dll.config
 C:\Users\kinsh\source\repos\EventsManager\EventsManager\obj\Debug\Windows\LoginWindow.g.cs
 C:\Users\kinsh\source\repos\EventsManager\EventsManager\obj\Debug\Windows\LoginWindow.baml
-C:\Users\kinsh\source\repos\EventsManager\EventsManager\obj\Debug\Windows\RegisterWindow.g.cs
-C:\Users\kinsh\source\repos\EventsManager\EventsManager\obj\Debug\Windows\RegisterWindow.baml
 C:\Users\kinsh\source\repos\EventsManager\EventsManager\bin\Debug\MaterialDesignColors.dll
 C:\Users\kinsh\source\repos\EventsManager\EventsManager\bin\Debug\MaterialDesignThemes.Wpf.dll
 C:\Users\kinsh\source\repos\EventsManager\EventsManager\bin\Debug\MaterialDesignColors.pdb
 C:\Users\kinsh\source\repos\EventsManager\EventsManager\bin\Debug\MaterialDesignThemes.Wpf.pdb
 C:\Users\kinsh\source\repos\EventsManager\EventsManager\bin\Debug\MaterialDesignThemes.Wpf.xml
 C:\Users\kinsh\source\repos\EventsManager\EventsManager\obj\Debug\App.baml
+C:\Users\kinsh\source\repos\EventsManager\EventsManager\obj\Debug\Windows\AddNewEventWindow.g.cs
+C:\Users\kinsh\source\repos\EventsManager\EventsManager\obj\Debug\Windows\AddNewEventWindow.baml
+C:\Users\kinsh\source\repos\EventsManager\EventsManager\obj\Debug\Windows\CreateAccountWindow.g.cs
+C:\Users\kinsh\source\repos\EventsManager\EventsManager\obj\Debug\Windows\CreateAccountWindow.baml

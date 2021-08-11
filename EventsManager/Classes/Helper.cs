@@ -14,5 +14,12 @@ namespace EventsManager
     {
         public static User user = null;
         public static Sql sql = new Sql();
+        public static AppSettings appSettings = new AppSettings();
+        public static Security security = new Security();
+
+        internal static void OpenWindow()
+        {
+            throw new NotImplementedException();
+        }
     }
 }

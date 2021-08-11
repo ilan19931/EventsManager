@@ -15,105 +15,269 @@
         FontFamily="{DynamicResource MaterialDesignFont}"
         
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        WindowStartupLocation="CenterScreen"
+        Title="Events Manager" Height="500" Width="800">
     <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="10*" />
-        </Grid.RowDefinitions>
-        
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="3*" />
-            <ColumnDefinition Width="*" />
-        </Grid.ColumnDefinitions>
 
-        <Border Grid.Row="0" Grid.Column="1" Background="#707B7C" />
-        <Border Grid.Row="1" Grid.Column="0" Background="#707B7C" />
+        <!-- Main Window -->
+        <Border Background="#D5DBDB" Padding="10">
+            <materialDesign:Card Padding="5">
+                <Grid MinWidth="450"  MinHeight="750">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="10*" />
+                    </Grid.RowDefinitions>
 
-        <TextBlock x:Name="textBlockWelcome" Text="Username" Grid.Row="0" Grid.Column="1" />
-
-        <!-- Main Menu -->
-        <Grid Grid.Row="0" Grid.Column="0">
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-                <ColumnDefinition Width="*" />
-            </Grid.ColumnDefinitions>
-
-            <Button Grid.Column="0" Margin="2" Content="Add Event" />
-            <Button Grid.Column="1" Margin="2" Content="Home" />
-            <Button Grid.Column="2" Margin="2" />
-            <Button Grid.Column="3" Margin="2" />
-            <Button Grid.Column="4" Margin="2" />
-            
-
-        </Grid>
-        
-        <!-- Events Table -->
-        
-        
-        <!-- Main body Grid -->
-        <Grid Grid.Row="1" Grid.Column="0">
-            <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
-                <RowDefinition Height="8*" />
-            </Grid.RowDefinitions>
-
-            <Border Grid.Row="0" Background="LightGray" />
-
-            <!-- Events Section -->
-            <Grid Grid.Row="1">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                    <RowDefinition Height="8*" />
-                </Grid.RowDefinitions>
-
-                <!-- Table Title -->
-                <Grid Grid.Row="0" Background="#99A3A4">
                     <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="4*" />
+                        <ColumnDefinition Width="3*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-                    <TextBlock Text="Date Created" Grid.Column="0" TextAlignment="Center" FontWeight="Bold" />
-                    <TextBlock Text="Description" Grid.Column="1" FontWeight="Bold" />
-                    <TextBlock Text="Options" Grid.Column="2" FontWeight="Bold" />
 
-                </Grid>
+                    <!-- Right Side User Profile -->
+                    <materialDesign:Card Grid.Column="1" Background="LightGray" Margin="5" Padding="2" >
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
 
-                <!-- ListBox Table -->
-                <ListBox x:Name="listBoxEvents" Grid.Row="1" HorizontalContentAlignment="Stretch">
-                    <ListBox.ItemTemplate>
-                        <DataTemplate>
-                            <Grid Margin="2" >
 
+                            <!-- Left Side -->
+                            <StackPanel Grid.Column="0" Width="Auto">
+
+                                <TextBlock x:Name="textBlockWelcome" FontWeight="Bold" TextWrapping="Wrap" Grid.Column="0" Text="Username" Grid.Row="0" />
+                                <Button x:Name="buttonDisconnect" Style="{StaticResource MaterialDesignOutlinedButton}" Content="Disconnect" Margin="5" Grid.Column="1" Click="buttonDisconnect_Click" />
+
+                            </StackPanel>
+                        </Grid>
+                    </materialDesign:Card>
+
+
+                    <!-- Right Side Panel -->
+                    <materialDesign:Card VerticalContentAlignment="Stretch" Background="#ECF0F1" Margin="5" Grid.Row="1" Grid.Column="1">
+                        <Grid>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="auto" />
+                                <RowDefinition Height="*" />
+                                <RowDefinition Height="auto" />
+                            </Grid.RowDefinitions>
+
+
+                            <!--  Comments Section -->
+                            <Grid Grid.Row="1">
                                 <Grid.RowDefinitions>
-                                    <RowDefinition Height="80" />
+                                    <RowDefinition Height="auto" />
+                                    <RowDefinition Height="3*" />
+                                    <RowDefinition Height="auto" />
                                 </Grid.RowDefinitions>
 
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="*" />
-                                    <ColumnDefinition Width="6*" />
-                                    <ColumnDefinition Width="2*" />
-                                </Grid.ColumnDefinitions>
 
-                                <Border Grid.Column="0" Background="{Binding Path=BgColor}" />
+                                <TextBlock TextAlignment="Center" Grid.Row="0" FontWeight="Bold" FontSize="16" Text="Event Comments" />
 
-                                <TextBlock Text="{Binding Path=DateCreated}" Grid.Column="0" TextAlignment="Center" />
-                                <TextBlock Text="{Binding Path=Description}" Grid.Column="1" Margin="10 0 0 0" />
-                                <TextBlock Text="{Binding Path=Options}" Grid.Column="2" />
+                                <ListBox x:Name="listBoxComments" Grid.Row="1" HorizontalContentAlignment="Stretch" >
+                                    <ListBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <materialDesign:Card Margin="5" HorizontalContentAlignment="Stretch">
+                                                <Grid>
+                                                    <Grid.RowDefinitions>
+                                                        <RowDefinition Height="auto" />
+                                                        <RowDefinition Height="2*" />
+                                                    </Grid.RowDefinitions>
+
+                                                    <Border Grid.Row="0" Background="LightGray">
+                                                        <TextBlock Text="{Binding Path=Title}" TextAlignment="Center" Margin="2">
+                                                        </TextBlock>
+                                                    </Border>
+
+                                                    <TextBlock Text="{Binding Path=Details}" Grid.Row="1" TextAlignment="Center" TextWrapping="Wrap" Margin="2" />
+
+                                                </Grid>
+                                            </materialDesign:Card>
+                                        </DataTemplate>
+                                    </ListBox.ItemTemplate>
+                                </ListBox>
+
+
+                                <!-- Add New Comment Section -->
+                                <Grid Grid.Row="2" Margin="5">
+                                    
+                                    <DockPanel>
+                                        <Separator DockPanel.Dock="Top" Style="{StaticResource MaterialDesignLightSeparator}" Background="LightGray" />
+
+                                        <TextBox x:Name="textCommentDetails" DockPanel.Dock="Top" TextWrapping="Wrap" AcceptsReturn="True"
+                                       VerticalScrollBarVisibility="Visible" materialDesign:HintAssist.Hint="Add New Comment" Margin="5" />
+
+                                        <Button x:Name="buttonAddComment" Content="Add Comment" Click="buttonAddComment_Click" />
+                                    </DockPanel>
+                                </Grid>
 
                             </Grid>
-                        </DataTemplate>
-                    </ListBox.ItemTemplate>
-                </ListBox>
-            </Grid>
+
+                        </Grid>
+                    </materialDesign:Card>
+
+                    <!-- Main Menu -->
+                    <Grid Grid.Row="0" Grid.Column="0">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="*" />
+                        </Grid.ColumnDefinitions>
+
+                        <Button x:Name="buttonAddEvent" Style="{StaticResource MaterialDesignRaisedDarkButton}" Margin="2" Content="Add Event" Click="buttonAddEvent_Click" />
+                        <Button Style="{StaticResource MaterialDesignFlatButton}" Grid.Column="1" Margin="2" Content="Home" />
+                        <Button Style="{StaticResource MaterialDesignFlatButton}" Grid.Column="2" Margin="2" />
+                        <Button Style="{StaticResource MaterialDesignFlatButton}" Grid.Column="3" Margin="2" />
+                        <Button Style="{StaticResource MaterialDesignFlatButton}" Grid.Column="4" Margin="2" />
 
 
-        </Grid>
+                    </Grid>
+
+                    <!-- Events Table -->
+
+
+                    <!-- Main body Grid -->
+                    <Grid Grid.Row="1" Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="*" />
+                            <RowDefinition Height="8*" />
+                        </Grid.RowDefinitions>
+
+
+                        <!--  Filters Panel -->
+                        <materialDesign:Card Grid.Row="0" Background="LightGray" Margin="5">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="2*" />
+                                    <ColumnDefinition Width="*" />
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Filter By Mode  -->
+                                <DockPanel Grid.Column="0">
+                                    <TextBlock Text="Filter By Event Mode" DockPanel.Dock="Top" FontWeight="Bold" Margin="2" />
+                                    <ComboBox x:Name="comboBoxEventModes" SelectedValuePath="{Binding Path=Mode}" HorizontalContentAlignment="Stretch" SelectionChanged="comboBoxEventModes_SelectionChanged">
+                                        <ComboBox.ItemTemplate>
+                                            <DataTemplate>
+                                                <materialDesign:Card Background="{Binding Path=Color}" Grid.Column="0">
+                                                    <TextBlock Text="{Binding Path=Title}" FontWeight="Black" TextAlignment="Center" Margin="5" />
+                                                </materialDesign:Card>
+                                            </DataTemplate>
+                                        </ComboBox.ItemTemplate>
+
+                                        <ComboBoxItem>Show All</ComboBoxItem>
+
+                                    </ComboBox>
+                                </DockPanel>
+
+
+                                <!-- Filter By Text Search  -->
+                                <Grid Grid.Column="1">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="2*" />
+                                        <ColumnDefinition Width="*" />
+                                    </Grid.ColumnDefinitions>
+                                    
+                                    
+                                    <TextBox x:Name="textEventSearch" Grid.Column="0" TextWrapping="Wrap" DockPanel.Dock="Left" materialDesign:HintAssist.Hint="Search Event By Text" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="20 10 10 10" TextChanged="textEventSearch_TextChanged"/>
+                                    <Button x:Name="buttonSearch" Grid.Column="1" Content="Search" DockPanel.Dock="Right" Click="buttonSearch_Click" />
+                                </Grid>
+
+
+                                <!-- text events statistics  -->
+                                <Grid Grid.Column="2">
+
+                                    <TextBlock Text="{Binding Path=statistics.EventsCount}" TextAlignment="Center" FontWeight="Bold" />
+                                </Grid>
+
+                            </Grid>
+                        </materialDesign:Card>
+
+
+                        <!-- Events Section -->
+                        <Grid Grid.Row="1">
+                            <materialDesign:Card Margin="10">
+
+                                <Grid>
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="8*" />
+                                    </Grid.RowDefinitions>
+
+                                    <!-- Table Title -->
+                                    <Grid Grid.Row="0" Background="#99A3A4">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="4*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+
+                                        <TextBlock Text="Date Created" Grid.Column="0" TextAlignment="Center" FontWeight="Bold" />
+                                        <TextBlock Text="Description" Grid.Column="1" FontWeight="Bold" />
+                                        <TextBlock Text="Options" Grid.Column="2" FontWeight="Bold" />
+
+                                    </Grid>
+
+                                    <!-- ListBox Table -->
+                                    <ListBox x:Name="listBoxEvents" Grid.Row="1" HorizontalContentAlignment="Stretch" SelectionChanged="listBoxEvents_SelectionChanged">
+
+                                        <ListBox.ItemTemplate>
+                                            <DataTemplate>
+
+                                                <materialDesign:Card Padding="3" Background="{Binding Path=EventBgColor}">
+                                                    <Grid Margin="2">
+
+                                                        <Grid.RowDefinitions>
+                                                            <RowDefinition Height="auto" />
+                                                            <RowDefinition MinHeight="80" Height="auto" />
+                                                        </Grid.RowDefinitions>
+
+                                                        <Grid.ColumnDefinitions>
+                                                            <ColumnDefinition Width="*" />
+                                                            <ColumnDefinition Width="6*" />
+                                                            <ColumnDefinition Width="2*" />
+                                                        </Grid.ColumnDefinitions>
+
+                                                        <!-- Event Title -->
+                                                        <Border Background="#ECF0F1" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2">
+                                                            <TextBlock Text="{Binding Path=MyEvent.Title}" FontWeight="Black" Margin="5" />
+                                                        </Border>
+
+                                                        <!-- Event BackGround color and CreatedDate -->
+                                                        <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Background="{Binding Path=MyEvent.BgColor}" >
+                                                            <TextBlock Text="{Binding Path=MyEvent.DateCreated}" TextWrapping="Wrap" FontWeight="Bold" TextAlignment="Center" VerticalAlignment="Center" />
+                                                        </Border>
+
+
+                                                        <TextBlock Text="{Binding Path=MyEvent.Details}" Grid.Row="1" Grid.Column="1" TextWrapping="Wrap" Margin="10 0 0 0" />
+                                                        
+                                                        
+                                                        <!--  Options in event -->
+                                                        <Grid Grid.Column="2">
+                                                            <Button x:Name="buttonCloseEvent" Tag="{Binding Path=MyEvent.Id}" Content="Close Event" Click="buttonCloseEvent_Click" />
+                                                        </Grid>
+
+                                                    </Grid>
+                                                </materialDesign:Card>
+
+                                            </DataTemplate>
+                                        </ListBox.ItemTemplate>
+                                    </ListBox>
+                                </Grid>
+
+                            </materialDesign:Card>
+                        </Grid>
+
+
+                    </Grid>
+
+                </Grid>
+            </materialDesign:Card>
+        </Border>
+
 
     </Grid>
 </Window>

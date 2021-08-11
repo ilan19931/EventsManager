@@ -20,10 +20,11 @@
         <Label Content="Login" Margin="95,24,82.6,0" VerticalAlignment="Top" FontWeight="Bold" FontSize="36"/>
         <Label Content="Username: " HorizontalAlignment="Left" Margin="52,108,0,0" VerticalAlignment="Top"/>
         <Label Content="Password: " HorizontalAlignment="Left" Margin="52,139,0,0" VerticalAlignment="Top"/>
-        <Button x:Name="buttonLogin" Content="Login" HorizontalAlignment="Left" Margin="95,185,0,0" VerticalAlignment="Top" Width="102" Height="28" FontWeight="Bold" FontSize="15" Click="buttonLogin_Click"/>
+        <Button x:Name="buttonLogin" Content="Login" HorizontalAlignment="Center" Margin="0,216,0,0" VerticalAlignment="Top" Width="102" Height="28" FontWeight="Bold" FontSize="15" Click="buttonLogin_Click"/>
         <TextBox x:Name="textBoxUsername" HorizontalAlignment="Left" Height="23" Margin="126,112,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120"/>
         <PasswordBox x:Name="textBoxPassword" HorizontalAlignment="Left" Margin="126,142,0,0" VerticalAlignment="Top" Width="120" Height="23"/>
         <Button x:Name="buttonRegister" Content="Create New Account" HorizontalAlignment="Left" Margin="52,271,0,0" VerticalAlignment="Top" Width="194" Height="28" FontWeight="Bold" Click="buttonRegister_Click"/>
+        <CheckBox x:Name="checkBoxRememberMe" Content="Remember Me" HorizontalAlignment="Left" Margin="186,183,0,0" VerticalAlignment="Top"/>
 
     </Grid>
 </Window>

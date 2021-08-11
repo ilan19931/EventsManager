@@ -1,5 +1,6 @@
 ﻿using EventsManager.Classes;
 using EventsManagerLogic.Helpers;
+using EventsManagerLogic.WindowsHelpers;
 using MaterialDesignThemes.Wpf;
 using System;
 using System.Collections.Generic;
@@ -20,10 +21,12 @@ namespace EventsManager.Windows
     /// <summary>
     /// Interaction logic for RegisterWindow.xaml
     /// </summary>
-    public partial class RegisterWindow : Window
+    public partial class CreateAccountWindow : Window
     {
+        CreateAccountWindowHelper windowHelper = new CreateAccountWindowHelper();
+        
         TextValidator tv = new TextValidator();
-        public RegisterWindow()
+        public CreateAccountWindow()
         {
             InitializeComponent();
         }
@@ -33,7 +36,7 @@ namespace EventsManager.Windows
             if(tv.basicTextCheck(txtUsername.Text,4,30) == true && tv.basicTextCheck(txtPassword.Password, 4, 30) == true
                 && tv.basicTextCheck(txtRePassword.Password, 4, 150) == true && tv.basicTextCheck(txtEmail.Text, 4, 200) == true)
             {
-                string errors = Helper.sql.CreateAccount(txtUsername.Text, txtPassword.Password, txtRePassword.Password, txtEmail.Text);
+                string errors = windowHelper.CreateAccount(txtUsername.Text, txtPassword.Password, txtRePassword.Password, txtEmail.Text);
 
                 if(errors == "")
                 {

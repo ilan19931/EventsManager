@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EventsManagerLogic.Classes;
+using System;
 using System.Collections.Generic;
 using System.Data;
 using System.Linq;
@@ -7,18 +8,18 @@ using System.Threading.Tasks;
 
 namespace EventsManagerLogic.Events
 {
-    public class ImportantEvent : IEvent
+    public class ImportantEvent : Event, IEvent
     {
-        public string DateCreated { get; set; }
-        public string Description { get; set; }
-        public string Options { get; set; }
-        public string BgColor { get; } = "Red";
 
-        public ImportantEvent(DataRow dr)
+        public ImportantEvent(DataRow data) : base(data)
         {
-            DateCreated = dr["DateCreated"].ToString();
-            Description = dr["Description"].ToString();
-            Options = dr["Options"].ToString();
+            base.BgColor = "red";
+        }
+
+        public ImportantEvent(int i_Id, string i_Title, string i_Details, int i_Mode, int i_Category, string i_DateCreated, int i_IsClosed)
+                                : base (i_Id, i_Title, i_Details, i_Mode, i_Category, i_DateCreated, i_IsClosed)
+        {
+            base.BgColor = "red";
         }
     }
 }

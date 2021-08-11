@@ -1,5 +1,6 @@
 ﻿using EventsManager.Classes;
 using EventsManagerLogic.Classes;
+using EventsManagerLogic.WindowsHelpers;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -22,6 +23,7 @@ namespace EventsManager.Windows
     /// </summary>
     public partial class LoginWindow : Window
     {
+        LoginWindowHelper windowHelper = new LoginWindowHelper();
 
         private TextValidator m_TextValidator = new TextValidator();
         public LoginWindow()
@@ -36,10 +38,24 @@ namespace EventsManager.Windows
 
             if (m_TextValidator.basicTextCheck(username, 4, 30) && m_TextValidator.basicTextCheck(password, 4, 150))
             {
-                User newUser = Helper.sql.checkLoginDetails(username, password);
+                User newUser = windowHelper.CheckLoginDetails(username, password);
                 if (newUser != null)
                 {
+                    string accessKey = "";
+                    if (checkBoxRememberMe.IsChecked == true)
+                    {
+                        accessKey = Helper.security.GenerateAccessKey();
+
+                        // insert accesskey into loggedInAccounts table
+                        windowHelper.InsertAccessKey(newUser.Id,accessKey);
+                    }
+
+                    Helper.appSettings.AccessKey = accessKey;
+                    Helper.appSettings.RememberMe = checkBoxRememberMe.IsChecked.Value;
+                    Helper.appSettings.SaveSettings();
+
                     Helper.user = newUser;
+                    DialogResult = true;
                     this.Close();
                 }
                 else
@@ -55,8 +71,8 @@ namespace EventsManager.Windows
 
         private void buttonRegister_Click(object sender, RoutedEventArgs e)
         {
-            RegisterWindow registerWindow = new RegisterWindow();
-            registerWindow.ShowDialog();
+            CreateAccountWindow createAccountWindow = new CreateAccountWindow();
+            createAccountWindow.ShowDialog();
         }
     }
 }

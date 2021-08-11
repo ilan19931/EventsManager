@@ -1,0 +1,117 @@
+﻿<Window x:Class="EventsManager.Windows.AddNewEventWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EventsManager.Windows"
+        
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+        
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Create New Event" MinHeight="600" MinWidth="800" Height="600" Width="800">
+    <Grid>
+        <materialDesign:Card Padding="20" Margin="20">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+
+                <StackPanel Grid.Row="0">
+                    <TextBlock TextAlignment="Center" FontFamily="arial" FontSize="20" FontWeight="Bold" Text="Add New Event" />
+                    <Separator Style="{StaticResource MaterialDesignLightSeparator}" Background="LightGray" />
+                </StackPanel>
+
+                <Grid Grid.Row="1">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*" />
+                        <RowDefinition Height="auto" />
+                        <RowDefinition Height="4*" />
+                        <RowDefinition Height="auto" />
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+
+
+                    <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2">
+                        <TextBlock DockPanel.Dock="Top" FontWeight="Bold" FontSize="12" Text="Event Title" />
+
+                        <TextBox x:Name="textTitle" materialDesign:HintAssist.Hint="Event Title" Style="{StaticResource MaterialDesignFloatingHintTextBox}" Margin="0,0,0,61" />
+
+                    </StackPanel>
+
+                    <DockPanel Grid.Row="1" Grid.Column="0" Margin="5">
+                        <TextBlock DockPanel.Dock="Top" FontWeight="Bold" FontSize="12" Text="Categories" />
+
+                        <ComboBox x:Name="comboBoxCategory" materialDesign:HintAssist.Hint="Category" IsEditable="True"
+                              Style="{StaticResource MaterialDesignFloatingHintComboBox}" VerticalAlignment="Top" SelectionChanged="comboBoxCategory_SelectionChanged">
+                            <ComboBoxItem Content="{Binding Path=Title}" />
+                        </ComboBox>
+
+                    </DockPanel>
+
+                    <DockPanel  Grid.Row="1" Grid.Column="1" Margin="5">
+                        <TextBlock DockPanel.Dock="Top" FontWeight="Bold" FontSize="12" Text="Sub-Categories" />
+
+                        <ComboBox x:Name="comboBoxSubCategory" materialDesign:HintAssist.Hint="Sub-Category" IsEditable="True"
+                              Style="{StaticResource MaterialDesignFloatingHintComboBox}" VerticalAlignment="Top">
+                            <ComboBoxItem IsSelected="True" Content="{Binding Path=Title}" />
+                        </ComboBox>
+
+                    </DockPanel>
+
+                    <DockPanel Grid.Row="2" Grid.Column="0" Margin="5" >
+                        <TextBlock DockPanel.Dock="Top" FontWeight="Bold" FontSize="12" Text="Event Details" />
+                        <TextBox x:Name="textEventDetails" TextWrapping="Wrap" AcceptsReturn="True"
+                           VerticalScrollBarVisibility="Visible" materialDesign:HintAssist.Hint="Event Details" Grid.Row="2" Grid.Column="0"
+                              Margin="2" ScrollViewer.HorizontalScrollBarVisibility="Auto" ScrollViewer.CanContentScroll="False"
+                             />
+                    </DockPanel>
+
+                    <!-- ListView event Modes -->
+                    <DockPanel Grid.Row="2" Grid.Column="1" Margin="5">
+                        <TextBlock DockPanel.Dock="Top" FontWeight="Bold" FontSize="12" Text="Event Mode" />
+
+                        <ListView x:Name="listViewModes" HorizontalContentAlignment="Stretch"
+                                      ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="False" >
+                            <ListView.ItemTemplate>
+                                <DataTemplate>
+                                    <materialDesign:Card Margin="2">
+                                        <Grid Height="50">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="*" />
+                                                <ColumnDefinition Width="5*" />
+                                            </Grid.ColumnDefinitions>
+
+                                            <Border Grid.Column="0" Background="{Binding Path=Color}" />
+                                            <TextBlock Grid.Column="1" Text="{Binding Path=Title}" Margin="5"/>
+
+                                        </Grid>
+                                    </materialDesign:Card>
+                                </DataTemplate>
+                            </ListView.ItemTemplate>
+
+                            <Border Grid.Column="0" Background="{Binding Path=BgColor}" />
+                            <TextBlock Grid.Column="1" Text="{Binding Path=Title}" />
+
+                        </ListView>
+                    </DockPanel>
+
+                    <Button x:Name="buttonSaveEvent" Margin="5" Content="Save Event" Grid.Row="3" Grid.Column="0" Grid.ColumnSpan="2" HorizontalAlignment="Center" VerticalAlignment="Center" Click="buttonSaveEvent_Click" />
+
+                </Grid>
+
+            </Grid>
+        </materialDesign:Card>
+    </Grid>
+</Window>
