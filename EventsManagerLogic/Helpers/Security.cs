@@ -18,7 +18,6 @@ namespace EventsManagerLogic.Helpers
             string accessKey = null;
             Random rand = new Random();
             StringBuilder stringBuilder = new StringBuilder();
-            Sql sql = new Sql();
 
             bool isValid = false;
             while (isValid == false)
@@ -33,7 +32,7 @@ namespace EventsManagerLogic.Helpers
 
                 //check if accessKey is allready taken
                 string query = $"SELECT id FROM loggedInAccounts WHERE accessKey = '{accessKey}'";
-                DataRowCollection drc = sql.SelectQuery(query);
+                DataRowCollection drc = Sql.SelectQuery(query);
                 if (drc.Count == 0)
                     isValid = true;
             }

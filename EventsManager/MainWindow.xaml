@@ -16,7 +16,7 @@
         
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Events Manager" Height="500" Width="800">
+        Title="Events Manager" MinHeight="700" Height="700" MinWidth="1100" Width="1100">
     <Grid>
 
         <!-- Main Window -->
@@ -50,6 +50,11 @@
                                 <Button x:Name="buttonDisconnect" Style="{StaticResource MaterialDesignOutlinedButton}" Content="Disconnect" Margin="5" Grid.Column="1" Click="buttonDisconnect_Click" />
 
                             </StackPanel>
+
+                            <StackPanel Grid.Column="1" VerticalAlignment="Center">
+                                <Button x:Name="buttonOpenAdminPanel" Style="{StaticResource MaterialDesignOutlinedButton}" Content="Admin Panel" Click="buttonOpenAdminPanel_Click" />
+                            </StackPanel>
+                            
                         </Grid>
                     </materialDesign:Card>
 
@@ -159,18 +164,35 @@
                                 <!-- Filter By Mode  -->
                                 <DockPanel Grid.Column="0">
                                     <TextBlock Text="Filter By Event Mode" DockPanel.Dock="Top" FontWeight="Bold" Margin="2" />
-                                    <ComboBox x:Name="comboBoxEventModes" SelectedValuePath="{Binding Path=Mode}" HorizontalContentAlignment="Stretch" SelectionChanged="comboBoxEventModes_SelectionChanged">
-                                        <ComboBox.ItemTemplate>
-                                            <DataTemplate>
-                                                <materialDesign:Card Background="{Binding Path=Color}" Grid.Column="0">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="*" />
+                                            <ColumnDefinition Width="*" />
+                                        </Grid.ColumnDefinitions>
+                                        
+                                        <ComboBox x:Name="comboBoxEventModes" Grid.Column="0" SelectedValuePath="{Binding Path=Mode}" HorizontalContentAlignment="Stretch" SelectionChanged="comboBoxEventModes_SelectionChanged">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
+                                                    <materialDesign:Card Background="{Binding Path=Color}" Grid.Column="0">
+                                                        <TextBlock Text="{Binding Path=Title}" FontWeight="Black" TextAlignment="Center" Margin="5" />
+                                                    </materialDesign:Card>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
+
+                                        </ComboBox>
+
+
+                                        <ComboBox x:Name="comboBoxStateFilter" Grid.Column="1" SelectedValuePath="{Binding Path=State}" HorizontalContentAlignment="Stretch" SelectionChanged="comboBoxStateFilter_SelectionChanged">
+                                            <ComboBox.ItemTemplate>
+                                                <DataTemplate>
                                                     <TextBlock Text="{Binding Path=Title}" FontWeight="Black" TextAlignment="Center" Margin="5" />
-                                                </materialDesign:Card>
-                                            </DataTemplate>
-                                        </ComboBox.ItemTemplate>
+                                                </DataTemplate>
+                                            </ComboBox.ItemTemplate>
 
-                                        <ComboBoxItem>Show All</ComboBoxItem>
-
-                                    </ComboBox>
+                                        </ComboBox>
+                                        
+                                        
+                                    </Grid>
                                 </DockPanel>
 
 
@@ -189,8 +211,10 @@
 
                                 <!-- text events statistics  -->
                                 <Grid Grid.Column="2">
-
-                                    <TextBlock Text="{Binding Path=statistics.EventsCount}" TextAlignment="Center" FontWeight="Bold" />
+                                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center" Margin="5">
+                                        <TextBlock Text="Events count: " />
+                                        <TextBlock x:Name="textStatisticsCount" FontWeight="Bold"/>
+                                    </StackPanel>
                                 </Grid>
 
                             </Grid>
@@ -227,7 +251,16 @@
                                         <ListBox.ItemTemplate>
                                             <DataTemplate>
 
-                                                <materialDesign:Card Padding="3" Background="{Binding Path=EventBgColor}">
+                                                <materialDesign:Card x:Name="mdEvent" Padding="3" >
+                                                    <materialDesign:Card.Style>
+                                                        <Style TargetType="{x:Type materialDesign:Card}">
+                                                            <Style.Triggers>
+                                                                <DataTrigger Binding="{Binding IsClosed}" Value="1">
+                                                                    <Setter Property="Background" Value="gray"/>
+                                                                </DataTrigger>
+                                                            </Style.Triggers>
+                                                        </Style>
+                                                    </materialDesign:Card.Style>
                                                     <Grid Margin="2">
 
                                                         <Grid.RowDefinitions>
@@ -243,21 +276,21 @@
 
                                                         <!-- Event Title -->
                                                         <Border Background="#ECF0F1" Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="2">
-                                                            <TextBlock Text="{Binding Path=MyEvent.Title}" FontWeight="Black" Margin="5" />
+                                                            <TextBlock Text="{Binding Path=Title}" FontWeight="Black" Margin="5" />
                                                         </Border>
 
                                                         <!-- Event BackGround color and CreatedDate -->
-                                                        <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Background="{Binding Path=MyEvent.BgColor}" >
-                                                            <TextBlock Text="{Binding Path=MyEvent.DateCreated}" TextWrapping="Wrap" FontWeight="Bold" TextAlignment="Center" VerticalAlignment="Center" />
+                                                        <Border Grid.Column="0" Grid.Row="0" Grid.RowSpan="2" Background="{Binding Path=BgColor}" >
+                                                            <TextBlock Text="{Binding Path=DateCreated}" TextWrapping="Wrap" FontWeight="Bold" TextAlignment="Center" VerticalAlignment="Center" />
                                                         </Border>
 
 
-                                                        <TextBlock Text="{Binding Path=MyEvent.Details}" Grid.Row="1" Grid.Column="1" TextWrapping="Wrap" Margin="10 0 0 0" />
+                                                        <TextBlock Text="{Binding Path=Details}" Grid.Row="1" Grid.Column="1" TextWrapping="Wrap" Margin="10 0 0 0" />
                                                         
                                                         
                                                         <!--  Options in event -->
                                                         <Grid Grid.Column="2">
-                                                            <Button x:Name="buttonCloseEvent" Tag="{Binding Path=MyEvent.Id}" Content="Close Event" Click="buttonCloseEvent_Click" />
+                                                            <Button x:Name="buttonCloseEvent" Tag="{Binding Path=Id}" Content="Close Event" Click="buttonCloseEvent_Click" />
                                                         </Grid>
 
                                                     </Grid>

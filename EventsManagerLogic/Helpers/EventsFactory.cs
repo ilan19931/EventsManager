@@ -37,8 +37,8 @@ namespace EventsManagerLogic.Helpers
             return newEvent;
 
         }
-
-        public static Event CreateEvent(int i_Id, string i_Title, string i_Details, int i_Mode, int i_Category, string i_DateCreated, int i_IsClosed = 0)
+        /*
+        public static Event CreateEvent(int i_Id, string i_Title, string i_Details, int i_Mode, int i_Category, string i_DateCreated, int i_GroupId, int i_IsClosed = 0)
         {
             Event newEvent = null;
             EEventMode eEventMode = (EEventMode)i_Mode;
@@ -46,26 +46,26 @@ namespace EventsManagerLogic.Helpers
             switch (eEventMode)
             {
                 case EEventMode.Regular:
-                    newEvent = new RegularEvent(i_Id, i_Title, i_Details, i_Mode, i_Category, i_DateCreated, i_IsClosed = 0);
+                    newEvent = new RegularEvent(i_Id, i_Title, i_Details, i_Mode, i_Category, i_DateCreated, i_GroupId, i_IsClosed = 0);
                     break;
 
                 case EEventMode.Important:
-                    newEvent = new ImportantEvent(i_Id, i_Title, i_Details, i_Mode, i_Category, i_DateCreated, i_IsClosed = 0);
+                    newEvent = new ImportantEvent(i_Id, i_Title, i_Details, i_Mode, i_Category, i_DateCreated, i_GroupId, i_IsClosed = 0);
                     break;
 
                 case EEventMode.Issue:
-                    newEvent = new IssueEvent(i_Id, i_Title, i_Details, i_Mode, i_Category, i_DateCreated, i_IsClosed = 0);
+                    newEvent = new IssueEvent(i_Id, i_Title, i_Details, i_Mode, i_Category, i_DateCreated, i_GroupId, i_IsClosed = 0);
                     break;
 
                 case EEventMode.Task:
-                    newEvent = new TaskEvent(i_Id, i_Title, i_Details, i_Mode, i_Category, i_DateCreated, i_IsClosed = 0);
+                    newEvent = new TaskEvent(i_Id, i_Title, i_Details, i_Mode, i_Category, i_DateCreated, i_GroupId, i_IsClosed = 0);
                     break;
             }
 
             return newEvent;
 
         }
-
+        */
 
         public static DataTable CreateEventTable(string i_Title, string i_Details, int i_Mode, int i_Category, DateTime i_DateCreated)
         {

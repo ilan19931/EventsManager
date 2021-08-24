@@ -12,7 +12,6 @@ namespace EventsManager.Classes
 {
     public class TextValidator
     {
-        Sql sql = null;
 
         public bool basicTextCheck(string str, int minLength, int maxLength)
         {

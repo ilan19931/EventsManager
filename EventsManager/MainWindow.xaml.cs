@@ -1,4 +1,5 @@
 ﻿using EventsManager.Windows;
+using EventsManager.Windows.Admin_Panel;
 using EventsManagerLogic;
 using EventsManagerLogic.Classes;
 using EventsManagerLogic.Events;
@@ -30,14 +31,16 @@ namespace EventsManager
     {
         private MainWindowHelper windowHelper = new MainWindowHelper();
 
-        private ObservableCollection<EventInList> eventsList = null;
-        private ObservableCollection<EventInList> filteredEvents = null;
-        private ObservableCollection<EventInList> lastEventsList = null;
-        private ObservableCollection<EventMode> eventFiltersModes;
+        private ObservableCollection<Event> eventsList = null;
+        private ObservableCollection<Event> lastEventsList = null;
+        private ObservableCollection<EventMode> eventModesFilter;
+        private ObservableCollection<EventStateFilter> eventStatesFilter = new ObservableCollection<EventStateFilter>();
 
         private ObservableCollection<Comment> commentsList = null;
 
-        private EeventModeSearchFilter m_CurrEventModeFilter = EeventModeSearchFilter.AllOpen;
+        private EEventMode? m_CurrModeFilter;
+        private EstateFilter m_CurrentStateFilter;
+        private string m_CurrentTextFilter;
 
         public Statistics statistics = new Statistics();
 
@@ -62,6 +65,7 @@ namespace EventsManager
         //user section
         private void doLogin()
         {
+
             // do auto login with access key
             if (Helper.appSettings.RememberMe == true && !string.IsNullOrEmpty(Helper.appSettings.AccessKey))
             {
@@ -69,6 +73,7 @@ namespace EventsManager
                 if (user != null)
                 {
                     Helper.user = user;
+                    windowHelper.GroupId = Helper.user.GroupId;
                 }
             }
 
@@ -82,6 +87,8 @@ namespace EventsManager
                 {
                     Environment.Exit(0);
                 }
+
+                windowHelper.GroupId = Helper.user.GroupId;
             }
 
             this.Visibility = Visibility.Visible;
@@ -98,7 +105,7 @@ namespace EventsManager
 
                 this.Visibility = Visibility.Hidden;
 
-                doLogin();
+                initWindow();
             }
         }
 
@@ -108,10 +115,12 @@ namespace EventsManager
         {
             eventsList = windowHelper.GetEvents();
             lastEventsList = eventsList;
-            listBoxEvents.SelectedValuePath = "MyEvent.Id";
+
+            listBoxEvents.SelectedValuePath = "Id";
             listBoxEvents.ItemsSource = eventsList;
 
             statistics.EventsCount = eventsList.Count;
+            textStatisticsCount.Text = statistics.EventsCount.ToString();
         }
         private void doOpenAddNewEvent()
         {
@@ -121,13 +130,14 @@ namespace EventsManager
         }
         public void AddItemIntoEventsList(Event i_Event)
         {
-            EventInList newEvent = new EventInList();
-            newEvent.MyEvent = i_Event;
-            newEvent.EventStatus = (EEventStatus)i_Event.IsClosed;
+            Event newEvent = i_Event;
+
             eventsList.Insert(0, newEvent);
 
             listBoxEvents.ItemsSource = null;
             listBoxEvents.ItemsSource = eventsList;
+
+            updateStatistics();
         }
         private void addNewComment()
         {
@@ -161,77 +171,10 @@ namespace EventsManager
         {
             Helper.sql.CloseEvent(i_Tag);
 
-            EventInList ev = (EventInList) lastEventsList.Where(x => x.MyEvent.Id == i_Tag).FirstOrDefault();
+            Event ev = (Event) lastEventsList.Where(x => x.Id == i_Tag).FirstOrDefault();
             lastEventsList.Remove(ev);
             listBoxEvents.ItemsSource = null;
             listBoxEvents.ItemsSource = lastEventsList;
-        }
-
-
-        // filters section
-        private void initFilterPanel()
-        {
-            fetchEventModesFilter();
-        }
-        private void fetchEventModesFilter()
-        {
-            comboBoxEventModes.Items.Clear();
-
-            eventFiltersModes = windowHelper.GetEventFiltersModes();
-
-            comboBoxEventModes.SelectedValuePath = "Mode";
-            comboBoxEventModes.SelectedIndex = 0;
-            comboBoxEventModes.ItemsSource = eventFiltersModes;
-        }
-        private void fetchEventsByModeFilter()
-        {
-            // show all events (no filter)
-            if (comboBoxEventModes.SelectedValue == null || (EeventModeSearchFilter)comboBoxEventModes.SelectedValue == EeventModeSearchFilter.AllEvents)
-            {
-                listBoxEvents.ItemsSource = null;
-                listBoxEvents.ItemsSource = eventsList;
-
-                m_CurrEventModeFilter = EeventModeSearchFilter.AllOpen;
-
-                statistics.EventsCount = eventsList.Count;
-            }
-            else
-            {
-                int n = (int)comboBoxEventModes.SelectedValue;
-                EeventModeSearchFilter eventModeFilter = (EeventModeSearchFilter)n;
-
-                m_CurrEventModeFilter = eventModeFilter;
-
-
-                lastEventsList = windowHelper.GetEventsByQuery(m_CurrEventModeFilter);
-
-                listBoxEvents.ItemsSource = null;
-                listBoxEvents.ItemsSource = lastEventsList;
-
-                statistics.EventsCount = lastEventsList.Count;
-            }
-        }
-        private void fetchEventsByTextSearch()
-        {
-            string txtSearch = textEventSearch.Text;
-
-            if (!string.IsNullOrEmpty(txtSearch))
-            {
-                filteredEvents = windowHelper.GetTextFilteredEvents(txtSearch, m_CurrEventModeFilter);
-
-
-                listBoxEvents.ItemsSource = null;
-                listBoxEvents.ItemsSource = filteredEvents;
-
-                statistics.EventsCount = filteredEvents.Count;
-            }
-            else
-            {
-                listBoxEvents.ItemsSource = null;
-                listBoxEvents.ItemsSource = lastEventsList;
-
-                statistics.EventsCount = lastEventsList.Count;
-            }
         }
         private void fetchComments()
         {
@@ -239,7 +182,7 @@ namespace EventsManager
 
             if (listBoxEvents.SelectedItem != null && listBoxEvents.SelectedValue != null)
             {
-                eventId = (int) listBoxEvents.SelectedValue;
+                eventId = (int)listBoxEvents.SelectedValue;
             }
 
             commentsList = windowHelper.GetEventComments(eventId);
@@ -248,6 +191,93 @@ namespace EventsManager
             listBoxComments.ItemsSource = null;
             listBoxComments.ItemsSource = commentsList;
         }
+
+        private void updateStatistics()
+        {
+            statistics.EventsCount = listBoxEvents.Items.Count;
+            textStatisticsCount.Text = statistics.EventsCount.ToString();
+        }
+
+
+
+
+        // filters section
+        private void initFilterPanel()
+        {
+            fetchEventModesFilter();
+            fetchEventStateFilters();
+        }
+
+        private void fetchEventStateFilters()
+        {
+            foreach (EstateFilter eState in Enum.GetValues(typeof(EstateFilter)))
+            {
+                eventStatesFilter.Add(EventStateFilter.CreateStateFilter(eState));
+            }
+
+            comboBoxStateFilter.ItemsSource = null;
+            comboBoxStateFilter.ItemsSource = eventStatesFilter;
+            comboBoxStateFilter.SelectedIndex = 0;
+        }
+        private void fetchEventModesFilter()
+        {
+            comboBoxEventModes.ItemsSource = null;
+
+            eventModesFilter = windowHelper.GetEventFiltersModes();
+
+            comboBoxEventModes.SelectedValuePath = "Mode";
+            comboBoxEventModes.SelectedIndex = 0;
+            comboBoxEventModes.ItemsSource = eventModesFilter;
+        }
+
+
+        private void fetchEventsByModeFilter()
+        {
+            ObservableCollection<Event> list = null;
+            m_CurrModeFilter = (comboBoxEventModes.SelectedValue != null) ? (EEventMode?)comboBoxEventModes.SelectedValue : null;
+
+            list = windowHelper.GetEventsByModeFilter(m_CurrModeFilter, m_CurrentStateFilter, m_CurrentTextFilter);
+            lastEventsList = list;
+
+            listBoxEvents.ItemsSource = null;
+            listBoxEvents.ItemsSource = list;
+
+            updateStatistics();
+        }
+
+        private void fetchEventsByTextSearch()
+        {
+            ObservableCollection<Event> list = new ObservableCollection<Event>();
+            m_CurrentTextFilter = (!string.IsNullOrEmpty(textEventSearch.Text)) ? textEventSearch.Text : null;
+
+            list = windowHelper.GetTextFilteredEvents(m_CurrentTextFilter, m_CurrModeFilter, m_CurrentStateFilter);
+            lastEventsList = list;
+
+            listBoxEvents.ItemsSource = null;
+            listBoxEvents.ItemsSource = list;
+
+            updateStatistics();
+        }
+        private void fetchEventsByStateFilter()
+        {
+            if (comboBoxStateFilter.SelectedValue != null)
+            {
+                m_CurrentStateFilter = (EstateFilter)((EventStateFilter)comboBoxStateFilter.SelectedValue).State;
+            }
+
+            ObservableCollection<Event> list = new ObservableCollection<Event>();
+
+            list = windowHelper.GetEventsByStateFilter(m_CurrModeFilter, m_CurrentStateFilter, m_CurrentTextFilter);
+            lastEventsList = list;
+
+            listBoxEvents.ItemsSource = null;
+            listBoxEvents.ItemsSource = list;
+
+            updateStatistics();
+
+        }
+
+
 
 
         // controls events section
@@ -287,5 +317,18 @@ namespace EventsManager
             fetchComments();
         }
 
+        private void comboBoxStateFilter_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            fetchEventsByStateFilter();
+        }
+
+        private void buttonOpenAdminPanel_Click(object sender, RoutedEventArgs e)
+        {
+            if(Helper.user != null && Helper.user.IsAdmin == true)
+            {
+                AdminPanelWindow adminPanelWindow = new AdminPanelWindow();
+                adminPanelWindow.ShowDialog();
+            }
+        }
     }
 }

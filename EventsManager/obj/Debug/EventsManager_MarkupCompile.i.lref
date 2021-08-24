@@ -2,6 +2,12 @@
 FC:\Users\kinsh\source\repos\EventsManager\EventsManager\App.xaml;;
 FC:\Users\kinsh\source\repos\EventsManager\EventsManager\MainWindow.xaml;;
 FC:\Users\kinsh\source\repos\EventsManager\EventsManager\Windows\AddNewEventWindow.xaml;;
+FC:\Users\kinsh\source\repos\EventsManager\EventsManager\Windows\Admin Panel\AdminPanelWindow.xaml;;
+FC:\Users\kinsh\source\repos\EventsManager\EventsManager\Windows\Admin Panel\Pages\CategoriesPage.xaml;;
+FC:\Users\kinsh\source\repos\EventsManager\EventsManager\Windows\Admin Panel\Pages\ModesPage.xaml;;
+FC:\Users\kinsh\source\repos\EventsManager\EventsManager\Windows\Admin Panel\Pages\UsersPage.xaml;;
 FC:\Users\kinsh\source\repos\EventsManager\EventsManager\Windows\LoginWindow.xaml;;
 FC:\Users\kinsh\source\repos\EventsManager\EventsManager\Windows\CreateAccountWindow.xaml;;
+FC:\Users\kinsh\source\repos\EventsManager\EventsManager\Windows\Pop-Ups\AddCategoryPopUpWindow.xaml;;
+FC:\Users\kinsh\source\repos\EventsManager\EventsManager\Windows\Pop-Ups\EditCategoryPopUpWindow.xaml;;
 

@@ -1,0 +1,77 @@
+﻿<Page x:Class="EventsManager.Windows.Admin_Panel.CategoriesPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:EventsManager.Windows.Admin_Panel"
+      
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+      
+      
+      mc:Ignorable="d" 
+      d:DesignHeight="450" d:DesignWidth="800"
+      Title="CategoriesPage">
+
+    <Grid Margin="20">
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*" />
+            <ColumnDefinition Width="*" />
+        </Grid.ColumnDefinitions>
+
+
+        <StackPanel HorizontalAlignment="Center" Grid.Column="0">
+
+            <TextBlock Text="Categories" FontSize="24" FontWeight="Bold" Margin="5" />
+
+            <ListBox x:Name="listBoxCategories" SelectionChanged="listBoxCategories_SelectionChanged">
+
+            </ListBox>
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="buttonAddCategory" Grid.Column="0" Content="Add Category" Margin="5" Click="buttonAddCategory_Click" />
+                <Button x:Name="buttonEditCategory" Grid.Column="1" Content="Edit Category" Margin="5" Click="buttonEditCategory_Click" />
+                <Button x:Name="buttonDeleteCategory" Grid.Column="1" Content="Delete Category" Margin="125.6,5,5.6,4.6" Grid.ColumnSpan="2" Click="buttonDeleteCategory_Click" />
+            </Grid>
+
+        </StackPanel>
+
+
+
+        <StackPanel HorizontalAlignment="Center" Grid.Column="1">
+
+            <TextBlock x:Name="textSubCategories" Text="Sub-Categories " FontSize="24" FontWeight="Bold" Margin="5" />
+            <ListBox x:Name="listBoxSubCategories">
+
+            </ListBox>
+
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="buttonAddSubCategory" Grid.Column="0" Content="Add Sub-Category" Margin="5" Click="buttonAddSubCategory_Click" />
+                <Button x:Name="buttonEditSubCategory" Grid.Column="1" Content="Edit Sub-Category" Margin="5" Click="buttonEditSubCategory_Click" />
+                <Button x:Name="buttonDeleteSubCategory" Grid.Column="2" Content="Delete Sub-Category" Margin="5" Click="buttonDeleteSubCategory_Click" />
+            </Grid>
+
+        </StackPanel>
+
+    </Grid>
+
+</Page>

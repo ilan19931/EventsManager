@@ -14,11 +14,9 @@ namespace EventsManagerLogic.WindowsHelpers
 {
     public class AddNewEventWindowHelper
     {
-
-        Sql sql = new Sql();
         AddNewEventWindowValidator validator = new AddNewEventWindowValidator();
 
-        public Event InsertEvent(string title, string eventDetails, int eventMode, int category, out string i_Errors)
+        public Event InsertEvent(string title, string eventDetails, int eventMode, int category, int groupId, out string i_Errors)
         {
             Event newEvent = null;
             i_Errors = validator.CheckInsertNewEvent(eventDetails, eventMode, category);
@@ -28,29 +26,29 @@ namespace EventsManagerLogic.WindowsHelpers
                 string safeTitle = title;
                 string safeEventDetails = eventDetails;
                 DateTime dateCreated = DateTime.Now;
-                string query = "INSERT INTO events (title,dateCreated,mode,categoryId,details)" +
-                    $" VALUES('{safeTitle}','{dateCreated}','{eventMode}','{category}','{safeEventDetails}')";
+                string query = "INSERT INTO events (title,dateCreated,mode,categoryId,details,groupId)" +
+                    $" VALUES('{safeTitle}','{dateCreated}','{eventMode}','{category}','{safeEventDetails}', {groupId})";
 
-                sql.DoQuery(query);
+                Sql.DoQuery(query);
 
-                query = $"SELECT id FROM events WHERE dateCreated = '{dateCreated}' AND mode = {eventMode} ORDER BY id DESC";
+                query = $"SELECT * FROM events WHERE dateCreated = '{dateCreated}' AND mode = {eventMode} ORDER BY id DESC";
                 int id = 0;
-                DataRow data = sql.SelectOneItemQuery(query);
+                DataRow data = Sql.SelectOneItemQuery(query);
                 if (data != null)
                 {
                     id = (int)data["id"];
                 }
 
-                newEvent = EventsFactory.CreateEvent(id, safeTitle, safeEventDetails, eventMode, category, dateCreated.ToString());
+                newEvent = EventsFactory.CreateEvent(data);
             }
 
             return newEvent;
         }
 
-        public List<Category> GetCategories(int i_Id = -1)
+        public ObservableCollection<Category> GetCategories(int i_Id = -1)
 
         {
-            List<Category> categories = new List<Category>();
+            ObservableCollection<Category> categories = new ObservableCollection<Category>();
             string query;
 
             if (i_Id != -1)
@@ -62,7 +60,7 @@ namespace EventsManagerLogic.WindowsHelpers
                 query = $"SELECT * FROM categories WHERE parentId IS NULL";
             }
 
-            DataRowCollection drc = sql.SelectQuery(query);
+            DataRowCollection drc = Sql.SelectQuery(query);
 
             if (drc.Count > 0)
             {
@@ -85,12 +83,12 @@ namespace EventsManagerLogic.WindowsHelpers
             ObservableCollection<EventMode> modesList = new ObservableCollection<EventMode>();
 
             string query = "SELECT * FROM eventModes";
-            DataRowCollection modes = sql.SelectQuery(query);
+            DataRowCollection modes = Sql.SelectQuery(query);
 
             foreach (DataRow mode in modes)
             {
                 EventMode newMode = new EventMode();
-                newMode.Mode = (EeventModeSearchFilter)mode["id"];
+                newMode.Mode = (EEventMode)mode["id"];
                 newMode.Title = mode["title"].ToString();
                 newMode.Color = mode["bgColor"].ToString();
 

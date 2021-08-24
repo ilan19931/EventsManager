@@ -12,11 +12,9 @@ namespace EventsManagerLogic.Validators
 {
     public class AddNewEventWindowValidator
     {
-        Sql sql = new Sql();
         TextValidator textValidator = new TextValidator();
         public string CheckInsertNewEvent(string i_EventDetails, int i_EventMode, int i_Category)
         {
-            sql = new Sql();
             string errors = "";
 
             if (textValidator.basicTextCheck(i_EventDetails, 1, 500) == false)
@@ -26,7 +24,7 @@ namespace EventsManagerLogic.Validators
 
             //check if category is valid
             string query = $"SELECT id FROM categories WHERE id = {i_Category}";
-            DataRowCollection drc = sql.SelectQuery(query);
+            DataRowCollection drc = Sql.SelectQuery(query);
             if (drc.Count == 0)
                 errors += "Invalid category\n";
 

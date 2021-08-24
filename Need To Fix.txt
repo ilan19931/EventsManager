@@ -10,3 +10,4 @@
 	need to insert safe values new account
 	need to insert safe values new event
 	need to insert safe values new comment
+	need to safe insert values at category title update

@@ -10,11 +10,11 @@ none
 false
 DEBUG;TRACE
 C:\Users\kinsh\source\repos\EventsManager\EventsManager\App.xaml
-4-1845667127
+102033585004
 
-101410873648
+162141601841
 181621366805
-MainWindow.xaml;Windows\AddNewEventWindow.xaml;Windows\LoginWindow.xaml;Windows\CreateAccountWindow.xaml;
+MainWindow.xaml;Windows\AddNewEventWindow.xaml;Windows\Admin Panel\AdminPanelWindow.xaml;Windows\Admin Panel\Pages\CategoriesPage.xaml;Windows\Admin Panel\Pages\ModesPage.xaml;Windows\Admin Panel\Pages\UsersPage.xaml;Windows\LoginWindow.xaml;Windows\CreateAccountWindow.xaml;Windows\Pop-Ups\AddCategoryPopUpWindow.xaml;Windows\Pop-Ups\EditCategoryPopUpWindow.xaml;
 
 True
 

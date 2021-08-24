@@ -18,6 +18,7 @@ namespace EventsManagerLogic.Events
         public string BgColor { get; set; }
         public int Category { get; set; }
         public int IsClosed { get; set; }
+        public int GroupId { get; set; }
 
         public EEventMode EeventMode { get; set; }
 
@@ -30,16 +31,18 @@ namespace EventsManagerLogic.Events
             Category = (int)dr["categoryId"];
             Title = dr["title"].ToString();
             IsClosed = (int)IsClosed;
+            GroupId = (int)dr["groupId"];
             //Options = dr["Options"].ToString();
         }
 
-        public Event(int i_Id, string i_Title, string i_Details, int i_Mode, int i_Category, string i_DateCreated, int i_IsClosed)
+        public Event(int i_Id, string i_Title, string i_Details, int i_Mode, int i_Category, string i_DateCreated, int i_IsClosed, int i_GroupID = 0)
         {
             Id = i_Id;
             DateCreated = i_DateCreated;
             Title = i_Title;
             Details = i_Details;
             IsClosed = i_IsClosed;
+            GroupId = i_GroupID;
         }
     }
 }

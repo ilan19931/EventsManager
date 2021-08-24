@@ -1,0 +1,27 @@
+﻿<Window x:Class="EventsManager.Windows.Pop_Ups.AddCategoryPopUpWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EventsManager.Windows.Pop_Ups"
+        mc:Ignorable="d"
+        Title="Add New Category" Height="150" Width="300" ResizeMode="NoResize" WindowStartupLocation="CenterScreen">
+    <Grid Background="White" HorizontalAlignment="Center">
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        
+        <StackPanel Orientation="Horizontal" Grid.Row="0">
+            <Label Content="Name: " />
+            <TextBox Name="textCategory" Width="100"/>
+        </StackPanel>
+
+        <StackPanel Orientation="Horizontal" Grid.Row="1">
+            <Button Name="buttonSubmit" Content="Submit" Margin="0 0 5 0" Click="buttonSubmit_Click" />
+            <Button Name="buttonCancel" Content="Cancel" Click="buttonCancel_Click"/>
+        </StackPanel>
+
+    </Grid>
+</Window>

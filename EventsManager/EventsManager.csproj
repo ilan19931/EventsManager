@@ -68,11 +68,29 @@
     <Compile Include="Windows\AddNewEventWindow.xaml.cs">
       <DependentUpon>AddNewEventWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Windows\Admin Panel\AdminPanelWindow.xaml.cs">
+      <DependentUpon>AdminPanelWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Admin Panel\Pages\CategoriesPage.xaml.cs">
+      <DependentUpon>CategoriesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Admin Panel\Pages\ModesPage.xaml.cs">
+      <DependentUpon>ModesPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Admin Panel\Pages\UsersPage.xaml.cs">
+      <DependentUpon>UsersPage.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Windows\LoginWindow.xaml.cs">
       <DependentUpon>LoginWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Windows\CreateAccountWindow.xaml.cs">
       <DependentUpon>CreateAccountWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Pop-Ups\AddCategoryPopUpWindow.xaml.cs">
+      <DependentUpon>AddCategoryPopUpWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Windows\Pop-Ups\EditCategoryPopUpWindow.xaml.cs">
+      <DependentUpon>EditCategoryPopUpWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -91,11 +109,35 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Windows\Admin Panel\AdminPanelWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Admin Panel\Pages\CategoriesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Admin Panel\Pages\ModesPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Admin Panel\Pages\UsersPage.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Windows\LoginWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Windows\CreateAccountWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Pop-Ups\AddCategoryPopUpWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Windows\Pop-Ups\EditCategoryPopUpWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

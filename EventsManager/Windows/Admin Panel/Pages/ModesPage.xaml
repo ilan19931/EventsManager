@@ -1,0 +1,51 @@
+﻿<Page x:Class="EventsManager.Windows.Admin_Panel.ModesPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+      xmlns:local="clr-namespace:EventsManager.Windows.Admin_Panel"
+      
+      xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        TextElement.Foreground="{DynamicResource MaterialDesignBody}"
+        TextElement.FontWeight="Regular"
+        TextElement.FontSize="13"
+        TextOptions.TextFormattingMode="Ideal"
+        TextOptions.TextRenderingMode="Auto"
+        Background="{DynamicResource MaterialDesignPaper}"
+        FontFamily="{DynamicResource MaterialDesignFont}"
+      
+      
+      mc:Ignorable="d" 
+      d:DesignHeight="350" d:DesignWidth="350"
+      Title="ModesPage">
+
+    <Grid>
+        <DockPanel Grid.Row="2" Grid.Column="1" Margin="5">
+            <TextBlock DockPanel.Dock="Top" FontWeight="Bold" FontSize="12" Text="Event Modes" />
+
+            <ListView x:Name="listViewModes" HorizontalContentAlignment="Stretch"
+                                      ScrollViewer.VerticalScrollBarVisibility="Visible" ScrollViewer.CanContentScroll="False" >
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <materialDesign:Card Margin="2">
+                            <Grid Height="50">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*" />
+                                    <ColumnDefinition Width="5*" />
+                                </Grid.ColumnDefinitions>
+
+                                <Border Grid.Column="0" Background="{Binding Path=Color}" />
+                                <TextBlock Grid.Column="1" Text="{Binding Path=Title}" Margin="5"/>
+
+                            </Grid>
+                        </materialDesign:Card>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+
+                <Border Grid.Column="0" Background="{Binding Path=BgColor}" />
+                <TextBlock Grid.Column="1" Text="{Binding Path=Title}" />
+
+            </ListView>
+        </DockPanel>
+    </Grid>
+</Page>

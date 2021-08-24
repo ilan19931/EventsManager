@@ -49,6 +49,7 @@
     <Compile Include="Classes\Statistics.cs" />
     <Compile Include="Events\Event.cs" />
     <Compile Include="Events\EventInList.cs" />
+    <Compile Include="Events\EventStateFilter.cs" />
     <Compile Include="Helpers\Helper.cs" />
     <Compile Include="Validators\AddNewEventWindowValidator.cs" />
     <Compile Include="Validators\TextValidator.cs" />
@@ -68,6 +69,8 @@
     <Compile Include="Validators\LoginWindowValidator.cs" />
     <Compile Include="Validators\MainWindowValidator.cs" />
     <Compile Include="WindowsHelpers\AddNewEventWindowHelper.cs" />
+    <Compile Include="WindowsHelpers\AdminPanel\AddCategoriesWindowHelper.cs" />
+    <Compile Include="WindowsHelpers\AdminPanel\ManageUsersWindowHelper.cs" />
     <Compile Include="WindowsHelpers\LoginWindowHelper.cs" />
     <Compile Include="WindowsHelpers\MainWindowHelper.cs" />
     <Compile Include="WindowsHelpers\CreateAccountWindowHelper.cs" />

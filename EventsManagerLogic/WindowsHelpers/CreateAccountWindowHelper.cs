@@ -14,7 +14,6 @@ namespace EventsManagerLogic.WindowsHelpers
 {
     public class CreateAccountWindowHelper
     {
-        private Sql sql = new Sql();
         private CreateAccountWindowValidator validator = new CreateAccountWindowValidator();
         private Security security = new Security();
 
@@ -35,7 +34,7 @@ namespace EventsManagerLogic.WindowsHelpers
                     $" VALUES('{safeUsername}','{safePassword}','{safeEmail}','{DateTime.Now}')";
 
 
-                sql.DoQuery(query);
+                Sql.DoQuery(query);
             }
 
             return errors;

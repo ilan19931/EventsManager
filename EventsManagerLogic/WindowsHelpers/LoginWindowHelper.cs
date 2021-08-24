@@ -13,7 +13,6 @@ namespace EventsManagerLogic.WindowsHelpers
     public class LoginWindowHelper
     {
         private Security security = new Security();
-        private Sql sql = new Sql();
         private TextValidator textValidator = new TextValidator();
 
         public User CheckLoginDetails(string i_Username, string i_Password)
@@ -23,7 +22,7 @@ namespace EventsManagerLogic.WindowsHelpers
             User user = null;
             string hashedPassword = security.Sha1Hash(security.Sha1Hash(i_Password));
             string query = $"SELECT * FROM accounts WHERE username = '{i_Username}' AND password = '{hashedPassword}'";
-            DataRowCollection account = sql.SelectQuery(query);
+            DataRowCollection account = Sql.SelectQuery(query);
 
             if (account.Count != 0)
             {
@@ -42,7 +41,7 @@ namespace EventsManagerLogic.WindowsHelpers
                 string query = "INSERT INTO loggedInAccounts (userId,accessKey,dateCreated)" +
                     $" VALUES('{i_Id}','{i_AccessKey}','{DateTime.Now}')";
 
-                sql.DoQuery(query);
+                Sql.DoQuery(query);
             }
         }
 

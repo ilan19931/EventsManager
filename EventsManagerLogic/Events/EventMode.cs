@@ -13,22 +13,50 @@ namespace EventsManagerLogic.Classes
         Issue,
         Task
     }
-    public enum EeventModeSearchFilter
+    public enum EstateFilter
     {
-        Regular,
-        Important,
-        Issue,
-        Task,
         AllOpen,
-        AllClosed,
-        AllEvents
+        AllEvents,
+        AllClosed
     }
 
     public class EventMode
     {
-        public EeventModeSearchFilter Mode { get; set; }
+        public EEventMode? Mode { get; set; }
         public string Title { get; set; }
         public string Color { get; set; }
+
+        public static EventMode CreateEventMode(EEventMode i_Mode)
+        {
+            string bgColor = null;
+            string title = i_Mode.ToString();
+
+            switch (i_Mode)
+            {
+                case EEventMode.Important:
+                    bgColor = "red";
+                    break;
+
+                case EEventMode.Regular:
+                    bgColor = "#2ecc71";
+                    break;
+
+                case EEventMode.Issue:
+                    bgColor = "#f1c40f";
+                    break;
+
+                case EEventMode.Task:
+                    bgColor = "#0984e3";
+                    break;
+            }
+
+            EventMode newMode = new EventMode();
+            newMode.Mode = i_Mode;
+            newMode.Title = title;
+            newMode.Color = bgColor;
+
+            return newMode;
+        }
 
     }
 }

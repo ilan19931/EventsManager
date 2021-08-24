@@ -12,7 +12,6 @@ namespace EventsManagerLogic.Validators
     {
         public string CheckCreateAccount(string i_Username, string i_Password, string i_RePassword, string i_Email)
         {
-            Sql sql = new Sql();
             string errors = "";
             string query;
             DataRowCollection drc;
@@ -32,13 +31,13 @@ namespace EventsManagerLogic.Validators
 
             //check if username is allready taken
             query = $"SELECT id FROM accounts WHERE username = '{i_Username}'";
-            drc = sql.SelectQuery(query);
+            drc = Sql.SelectQuery(query);
             if (drc.Count != 0)
                 errors += "username is allready taken\n";
 
             //check if email is allready taken
             query = $"SELECT id FROM accounts WHERE email = '{i_Email}'";
-            drc = sql.SelectQuery(query);
+            drc = Sql.SelectQuery(query);
             if (drc.Count != 0)
                 errors += "email is allready taken\n";
 

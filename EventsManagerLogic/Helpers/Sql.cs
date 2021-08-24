@@ -22,7 +22,7 @@ namespace EventsManagerLogic.Helpers
         private TextValidator textValidator = new TextValidator();
 
 
-        public DataRowCollection SelectQuery(string query)
+        internal static DataRowCollection SelectQuery(string query)
         {
             DataTable dataTable = null;
             using (SqlConnection connection = new SqlConnection(m_ConnectionString))
@@ -44,7 +44,7 @@ namespace EventsManagerLogic.Helpers
 
             return dataTable.Rows;
         }
-        public DataRow SelectOneItemQuery(string query)
+        internal static DataRow SelectOneItemQuery(string query)
         {
             DataTable dataTable = null;
             DataRow data = null;
@@ -68,7 +68,7 @@ namespace EventsManagerLogic.Helpers
 
             return data;
         }
-        public void DoQuery(string query)
+        internal static void DoQuery(string query)
         {
             using (SqlConnection connection = new SqlConnection(m_ConnectionString))
             {
@@ -88,7 +88,7 @@ namespace EventsManagerLogic.Helpers
             if (data != null)
             {
                 query = $"UPDATE events SET isClosed = 1 WHERE id = {i_Id}";
-                this.DoQuery(query);
+                DoQuery(query);
             }
         }
 

@@ -16,8 +16,13 @@ namespace EventsManagerLogic.WindowsHelpers
 {
     public class MainWindowHelper
     {
-        private Sql sql = new Sql();
         private MainWindowValidator validator = new MainWindowValidator();
+        public int GroupId { get; set; }
+
+        public MainWindowHelper()
+        {
+
+        }
 
         // getters
         public ObservableCollection<Comment> GetEventComments(int i_EventId)
@@ -27,7 +32,7 @@ namespace EventsManagerLogic.WindowsHelpers
             if (i_EventId > 0)
             {
                 string query = $"SELECT * FROM comments WHERE eventId = '{i_EventId}'";
-                DataRowCollection drc = sql.SelectQuery(query);
+                DataRowCollection drc = Sql.SelectQuery(query);
 
                 if (drc.Count > 0)
                 {
@@ -44,17 +49,15 @@ namespace EventsManagerLogic.WindowsHelpers
 
             return commentsList;
         }
-        public ObservableCollection<EventInList> GetEvents()
+        public ObservableCollection<Event> GetEvents()
         {
-            ObservableCollection<EventInList> events = new ObservableCollection<EventInList>();
-            string query = "SELECT * FROM events ORDER BY id DESC";
-            DataRowCollection allData = sql.SelectQuery(query);
+            ObservableCollection<Event> events = new ObservableCollection<Event>();
+            string query = $"SELECT * FROM events WHERE (groupId = {GroupId} OR groupId = 0) ORDER BY groupId ASC , id DESC";
+            DataRowCollection allData = Sql.SelectQuery(query);
 
             foreach (DataRow data in allData)
             {
-                EventInList newEvent = new EventInList();
-                newEvent.MyEvent = EventsFactory.CreateEvent(data);
-                newEvent.EventStatus = (EEventStatus)data["isClosed"];
+                Event newEvent = EventsFactory.CreateEvent(data);
 
                 events.Add(newEvent);
             }
@@ -63,74 +66,52 @@ namespace EventsManagerLogic.WindowsHelpers
         }
 
         //Mode filters
-        public ObservableCollection<EventInList> GetTextFilteredEvents(string i_TxtSearch, EeventModeSearchFilter i_EventModeSearchFilter)
+        public ObservableCollection<Event> GetTextFilteredEvents(string i_TxtSearch, EEventMode? i_CurrModeFilter, EstateFilter i_CurrStateFilter)
         {
-            ObservableCollection<EventInList> list = new ObservableCollection<EventInList>();
+            ObservableCollection<Event> list = new ObservableCollection<Event>();
+            int isClosed = (i_CurrStateFilter == EstateFilter.AllClosed) ? 1 : 0;
 
             if (!string.IsNullOrEmpty(i_TxtSearch))
             {
                 string query;
                 DataRowCollection drc;
 
-                switch (i_EventModeSearchFilter)
+                if(i_CurrModeFilter != null)
                 {
-                    case EeventModeSearchFilter.AllOpen:
-                        query = $"SELECT * FROM events WHERE details LIKE '%{i_TxtSearch}%' AND isClosed = 0";
-                        break;
-
-                    case EeventModeSearchFilter.AllClosed:
-                        query = $"SELECT * FROM events WHERE details LIKE '%{i_TxtSearch}%' AND isClosed = 1";
-                        break;
-
-                    case EeventModeSearchFilter.AllEvents:
-                        query = $"SELECT * FROM events WHERE details LIKE '%{i_TxtSearch}%'";
-                        break;
-
-                    default:
-                        query = $"SELECT * FROM events WHERE mode = {(int)i_EventModeSearchFilter} AND details LIKE '%{i_TxtSearch}%'";
-                        break;
+                    query = $"SELECT * FROM events WHERE details LIKE '%{i_TxtSearch}%' AND mode = {(int)i_CurrModeFilter} AND (groupId = {GroupId} OR groupId = 0) AND isClosed = {isClosed} ORDER BY groupId ASC";
+                }
+                else
+                {
+                    query = $"SELECT * FROM events WHERE details LIKE '%{i_TxtSearch}%' AND (groupId = {GroupId} OR groupId = 0) AND isClosed = {isClosed} ORDER BY groupId ASC";
                 }
 
-                drc = sql.SelectQuery(query);
+                drc = Sql.SelectQuery(query);
 
                 if (drc.Count > 0)
                 {
                     foreach (DataRow data in drc)
                     {
-                        EventInList newEvent = new EventInList();
-                        newEvent.MyEvent = EventsFactory.CreateEvent(data);
-                        newEvent.EventStatus = (EEventStatus)data["isClosed"];
+                        Event newEvent = EventsFactory.CreateEvent(data);
 
                         list.Add(newEvent);
                     }
                 }
             }
+            else
+            {
+                list = this.GetEventsByStateFilter(i_CurrModeFilter, i_CurrStateFilter, null);
+            }
 
             return list;
         }
-        public ObservableCollection<EventInList> GetEventsByQuery(EeventModeSearchFilter i_CurrModeFilter)
+        public ObservableCollection<EventInList> GetEventsByQuery(EEventMode i_CurrModeFilter)
         {
             ObservableCollection<EventInList> newList = new ObservableCollection<EventInList>();
             DataRowCollection drc;
-            string query;
+            string query = null;
 
-            // show open events
-            if (i_CurrModeFilter == EeventModeSearchFilter.AllOpen)
-            {
-                query = "SELECT * FROM events WHERE isClosed = 0 ORDER BY id DESC";
-            }
-            // show closed events
-            else if (i_CurrModeFilter == EeventModeSearchFilter.AllClosed)
-            {
-                query = "SELECT * FROM events WHERE isClosed = 1 ORDER BY id DESC";
-            }
-            else
-            {
-                // show events by mode
-                query = $"SELECT * FROM events WHERE mode = {(int)i_CurrModeFilter} AND isClosed = 0 ORDER BY id DESC";
-            }
 
-            drc = sql.SelectQuery(query);
+            drc = Sql.SelectQuery(query);
 
             if (drc.Count > 0)
             {
@@ -150,23 +131,13 @@ namespace EventsManagerLogic.WindowsHelpers
         {
             ObservableCollection<EventMode> modesList = new ObservableCollection<EventMode>();
 
-            string query = "SELECT * FROM eventModes";
-            DataRowCollection modes = sql.SelectQuery(query);
-
-            foreach (DataRow mode in modes)
+            foreach (EEventMode eventMode in Enum.GetValues(typeof(EEventMode)))
             {
-                EventMode newMode = new EventMode();
-                newMode.Mode = (EeventModeSearchFilter)mode["id"];
-                newMode.Title = mode["title"].ToString();
-                newMode.Color = mode["bgColor"].ToString();
-
-                modesList.Add(newMode);
+                EventMode mode = EventMode.CreateEventMode(eventMode);
+                modesList.Add(mode);
             }
 
-            modesList.Insert(0, new EventMode { Title = "Open Events", Mode = EeventModeSearchFilter.AllOpen });
-            modesList.Insert(1, new EventMode { Title = "All Events", Mode = EeventModeSearchFilter.AllEvents });
-            modesList.Insert(2, new EventMode { Title = "Closed Events", Mode = EeventModeSearchFilter.AllClosed });
-
+            modesList.Insert(0, new EventMode { Title = "All Modes", Mode = null });
 
             return modesList;
         }
@@ -178,12 +149,12 @@ namespace EventsManagerLogic.WindowsHelpers
             if (!string.IsNullOrEmpty(i_AccessKey))
             {
                 string query = $"SELECT * FROM loggedInAccounts WHERE accessKey = '{i_AccessKey}'";
-                DataRow data = sql.SelectOneItemQuery(query);
+                DataRow data = Sql.SelectOneItemQuery(query);
 
                 if (data != null)
                 {
                     query = $"SELECT * FROM accounts WHERE id = '{data["userId"]}'";
-                    data = sql.SelectOneItemQuery(query);
+                    data = Sql.SelectOneItemQuery(query);
 
                     if (data != null)
                     {
@@ -193,6 +164,50 @@ namespace EventsManagerLogic.WindowsHelpers
             }
 
             return user;
+        }
+
+        public ObservableCollection<Event> GetEventsByModeFilter(EEventMode? i_CurrModeFilter, EstateFilter i_CurrStateFilter, string i_CurrTextFilter)
+        {
+            ObservableCollection<Event> list = new ObservableCollection<Event>();
+            string query;
+            int isClosed = (i_CurrStateFilter == EstateFilter.AllClosed) ? 1 : 0;
+
+            if (i_CurrModeFilter == null)
+            {
+                if (string.IsNullOrEmpty(i_CurrTextFilter))
+                {
+                    query = $"SELECT * FROM events WHERE (groupId = {GroupId} OR groupId = 0) AND isClosed = {isClosed} ORDER BY groupId ASC";
+                }
+                else
+                {
+                    query = $"SELECT * FROM events WHERE details LIKE '%{i_CurrTextFilter}%' AND (groupId = {GroupId} OR groupId = 0) AND isClosed = {isClosed} ORDER BY groupId ASC";
+                }
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(i_CurrTextFilter))
+                {
+                    query = $"SELECT * FROM events WHERE mode = {(int)i_CurrModeFilter} AND (groupId = {GroupId} OR groupId = 0) AND isClosed = {isClosed} ORDER BY groupId ASC";
+                }
+                else
+                {
+                    query = $"SELECT * FROM events WHERE details LIKE '%{i_CurrTextFilter}%' AND (groupId = {GroupId} OR groupId = 0) AND mode = {(int)i_CurrModeFilter} AND isClosed = {isClosed} ORDER BY groupId ASC";
+
+                }
+            }
+
+            DataRowCollection drc = Sql.SelectQuery(query);
+
+            if(drc.Count > 0)
+            {
+                foreach (DataRow data in drc)
+                {
+                    Event newEvent = EventsFactory.CreateEvent(data);
+                    list.Add(newEvent);
+                }
+            }
+
+            return list;
         }
 
         public Comment AddNewComment(int i_UserId, string i_Username, int i_EventId, string i_CommentDetails, out string i_Errors)
@@ -209,10 +224,10 @@ namespace EventsManagerLogic.WindowsHelpers
                 string query = "INSERT INTO comments (userId,eventId,usernamePosted,details,dateCreated)" +
                     $" VALUES('{i_UserId}','{i_EventId}','{i_Username}','{safeCommentDetails}','{dateCreated}')";
 
-                sql.DoQuery(query);
+                Sql.DoQuery(query);
 
                 query = $"SELECT id FROM comments WHERE userId = {i_UserId} AND eventId = {i_EventId} AND dateCreated = '{dateCreated}' ORDER BY id DESC";
-                DataRow data = sql.SelectOneItemQuery(query);
+                DataRow data = Sql.SelectOneItemQuery(query);
                 int id = (data != null) ? (int)data["id"] : 0;
 
                 if (id != 0)
@@ -222,7 +237,75 @@ namespace EventsManagerLogic.WindowsHelpers
             return (newComment != null) ? newComment : new Comment();
         }
 
+        public ObservableCollection<Event> GetEventsByStateFilter(EEventMode? i_CurrModeFilter, EstateFilter i_CurrStateFilter, string i_CurrTextFilter)
+        {
+            ObservableCollection<Event> list = new ObservableCollection<Event>();
+            string query;
+            int isClosed = (i_CurrStateFilter == EstateFilter.AllClosed) ? 1 : 0;
 
+            if (i_CurrModeFilter == null)
+            {
+                if (string.IsNullOrEmpty(i_CurrTextFilter))
+                {
+                    if (i_CurrStateFilter == EstateFilter.AllEvents)
+                    {
+                        query = $"SELECT * FROM events WHERE groupId = {GroupId} OR groupId = 0 ORDER BY groupId ASC";
+                    }
+                    else
+                    {
+                        query = $"SELECT * FROM events WHERE isClosed = {isClosed} AND (groupId = {GroupId} OR groupId = 0) ORDER BY groupId ASC";
+                    }
+                }
+                else
+                {
+                    if (i_CurrStateFilter == EstateFilter.AllEvents)
+                    {
+                        query = $"SELECT * FROM events WHERE details LIKE '%{i_CurrTextFilter}%' AND (groupId = {GroupId} OR groupId = 0) ORDER BY groupId ASC";
+                    }
+                    else
+                    {
+                        query = $"SELECT * FROM events WHERE details LIKE '%{i_CurrTextFilter}%' AND isClosed = {isClosed} AND (groupId = {GroupId} OR groupId = 0) ORDER BY groupId ASC";
+                    }
+                }
+            }
+            else
+            {
+                if (string.IsNullOrEmpty(i_CurrTextFilter))
+                {
+                    if (i_CurrStateFilter == EstateFilter.AllEvents)
+                    {
+                        query = $"SELECT * FROM events WHERE mode = {(int)i_CurrModeFilter} AND (groupId = {GroupId} OR groupId = 0) ORDER BY groupId ASC";
+                    }
+                    else
+                    {
+                        query = $"SELECT * FROM events WHERE mode = {(int)i_CurrModeFilter} AND (groupId = {GroupId} OR groupId = 0) AND isClosed = {isClosed}  ORDER BY groupId ASC";
+                    }
+                }
+                else
+                {
+                    if (i_CurrStateFilter == EstateFilter.AllEvents)
+                    {
+                        query = $"SELECT * FROM events WHERE details LIKE '%{i_CurrTextFilter}%' AND mode = {(int)i_CurrModeFilter} AND (groupId = {GroupId} OR groupId = 0) ORDER BY groupId ASC";
+                    }
+                    else
+                    {
+                        query = $"SELECT * FROM events WHERE details LIKE '%{i_CurrTextFilter}%' AND mode = {(int)i_CurrModeFilter} AND (groupId = {GroupId} OR groupId = 0) AND isClosed = {isClosed} ORDER BY groupId ASC";
+                    }
+                }
+            }
 
+            DataRowCollection drc = Sql.SelectQuery(query);
+
+            if (drc.Count > 0)
+            {
+                foreach (DataRow data in drc)
+                {
+                    Event newEvent = EventsFactory.CreateEvent(data);
+                    list.Add(newEvent);
+                }
+            }
+
+            return list;
+        }
     }
 }

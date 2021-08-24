@@ -12,7 +12,6 @@ namespace EventsManagerLogic.Validators
 {
     public class MainWindowValidator
     {
-        Sql sql = new Sql();
         TextValidator textValidator= new TextValidator();
 
         public string CheckAddNewComment(int i_UserId, string i_Username, int i_EventId, string i_CommentDetails)
@@ -24,7 +23,7 @@ namespace EventsManagerLogic.Validators
 
             //check if userid is valid
             query = $"SELECT id,username FROM accounts WHERE id = {i_UserId}";
-            drc = Helper.sql.SelectQuery(query);
+            drc = Sql.SelectQuery(query);
             data = (drc.Count != 0) ? drc[0] : null;
 
             if (data == null)
@@ -40,7 +39,7 @@ namespace EventsManagerLogic.Validators
 
             //check if eventId is valid
             query = $"SELECT id FROM events WHERE id = {i_EventId}";
-            drc = Helper.sql.SelectQuery(query);
+            drc = Sql.SelectQuery(query);
             data = (drc.Count != 0) ? drc[0] : null;
 
             if (data == null)

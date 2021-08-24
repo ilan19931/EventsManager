@@ -27,8 +27,8 @@ namespace EventsManager.Windows
     public partial class AddNewEventWindow : Window
     {
         AddNewEventWindowHelper windowHelper = new AddNewEventWindowHelper();
-        List<Category> categories = null;
-        List<Category> subCategories = null;
+        ObservableCollection<Category> categories = null;
+        ObservableCollection<Category> subCategories = null;
         ObservableCollection<EventMode> eventModes = null;
 
         public AddNewEventWindow()
@@ -51,7 +51,6 @@ namespace EventsManager.Windows
 
         private void fetchEventModes()
         {
-            eventModes = new ObservableCollection<EventMode>();
             eventModes = windowHelper.GetEventModes();
 
             listViewModes.ItemsSource = eventModes;
@@ -101,7 +100,7 @@ namespace EventsManager.Windows
                 title = $"{comboBoxCategory.Text} -> {comboBoxSubCategory.Text}";
             }
 
-            newEvent = windowHelper.InsertEvent(title, eventDetails,(int) eEventMode,category, out errors);
+            newEvent = windowHelper.InsertEvent(title, eventDetails,(int) eEventMode,category, Helper.user.GroupId, out errors);
 
             if(errors == "")
             {
